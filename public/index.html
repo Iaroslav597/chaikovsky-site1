@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Чайковский | Места силы и мероприятия</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1>ЧАЙКОВСКИЙ</h1>
+                <span class="logo-subtitle">места силы и события</span>
+            </div>
+            <nav class="main-nav" id="mainNav">
+                <a href="#" class="nav-link active" data-page="events">Мероприятия</a>
+                <a href="#" class="nav-link" data-page="attractions">Места силы</a>
+            </nav>
+            <div class="auth-buttons" id="authWidget">
+                <button class="btn btn-outline" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Вход</button>
+                <button class="btn btn-filled" id="registerBtn"><i class="fas fa-user-plus"></i> Регистрация</button>
+            </div>
+            <div id="userWelcome" class="user-welcome" style="display: none;"></div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <section class="hero" id="heroSection">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="search-area">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" placeholder="Поиск...">
+                            <button id="searchBtn" class="search-btn-custom"><i class="fas fa-search"></i> Найти</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalAttractionsCount">0</span>
+                        <span class="stat-label">мест силы</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalEventsCount">0</span>
+                        <span class="stat-label">мероприятий</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalReviewsCount">0</span>
+                        <span class="stat-label">отзывов</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="content-section" id="dynamicContent"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h4>Чайковский</h4>
+                <p>Город на берегу Камы, где природа встречается с энергией.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Информация</h4>
+                <ul>
+                    <li><a href="#" data-page="events">Мероприятия</a></li>
+                    <li><a href="#" data-page="attractions">Места силы</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Чайковский | <strong>Откройте места силы</strong></p>
+        </div>
+    </footer>
+
+    <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+    <div id="authModal" class="modal">
+        <div class="modal-card">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h3 id="modalTitle">Вход</h3>
+            <input type="text" id="modalLogin" placeholder="Логин">
+            <input type="password" id="modalPassword" placeholder="Пароль">
+            <input type="password" id="modalConfirmPassword" placeholder="Подтверждение пароля" style="display: none;">
+            <button id="modalActionBtn" class="btn-filled">Войти</button>
+            <p id="modalError" class="modal-error"></p>
+        </div>
+    </div>
+    
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ/РЕДАКТИРОВАНИЯ МЕСТА СИЛЫ -->
+    <div id="addAttractionModal" class="modal">
+        <div class="modal-card modal-card-large">
+            <span class="close-modal" id="closeAttractionModal">&times;</span>
+            <h3 id="attractionModalTitle"><i class="fas fa-plus-circle"></i> Добавить место силы</h3>
+            <input type="hidden" id="editingAttractionId" value="">
+            <input type="text" id="attractionName" placeholder="Название *">
+            <input type="text" id="attractionLocation" placeholder="Место проведения (город/район) *">
+            <input type="text" id="attractionDistance" placeholder="Расстояние от Чайковского (км)">
+            <input type="text" id="attractionTime" placeholder="Время проведения (необязательно)">
+            <textarea id="attractionDescription" rows="3" placeholder="Описание (необязательно)"></textarea>
+            <input type="url" id="attractionLink" placeholder="Ссылка на VK или сайт">
+            <div class="photo-selector">
+                <label>Фотография (необязательно):</label>
+                <input type="file" id="attractionPhoto" accept="image/*" style="padding: 10px;">
+                <div id="attractionPhotoPreview" style="margin-top: 10px; display: none;">
+                    <img id="attractionPhotoImg" style="max-width: 100%; max-height: 150px; border-radius: 12px;">
+                </div>
+            </div>
+            <button id="saveAttractionBtn" class="btn-filled">Сохранить</button>
+        </div>
+    </div>
+    
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ/РЕДАКТИРОВАНИЯ МЕРОПРИЯТИЯ -->
+    <div id="addEventModal" class="modal">
+        <div class="modal-card modal-card-large">
+            <span class="close-modal" id="closeEventModal">&times;</span>
+            <h3 id="eventModalTitle"><i class="fas fa-calendar-plus"></i> Добавить мероприятие</h3>
+            <input type="hidden" id="editingEventId" value="">
+            <input type="text" id="eventName" placeholder="Название *">
+            <input type="text" id="eventLocation" placeholder="Место проведения (город/район) *">
+            <input type="date" id="eventDate">
+            <input type="text" id="eventDistance" placeholder="Расстояние от Чайковского (км)">
+            <input type="text" id="eventTime" placeholder="Время проведения (необязательно)">
+            <textarea id="eventDescription" rows="3" placeholder="Описание (необязательно)"></textarea>
+            <input type="url" id="eventLink" placeholder="Ссылка на VK или сайт">
+            <div class="photo-selector">
+                <label>Фотография (необязательно):</label>
+                <input type="file" id="eventPhoto" accept="image/*" style="padding: 10px;">
+                <div id="eventPhotoPreview" style="margin-top: 10px; display: none;">
+                    <img id="eventPhotoImg" style="max-width: 100%; max-height: 150px; border-radius: 12px;">
+                </div>
+            </div>
+            <button id="saveEventBtn" class="btn-filled">Добавить</button>
+        </div>
+    </div>
+    
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ/РЕДАКТИРОВАНИЯ ОТЗЫВА -->
+    <div id="addReviewModal" class="modal">
+        <div class="modal-card">
+            <span class="close-modal" id="closeReviewModal">&times;</span>
+            <h3 id="reviewModalTitle"><i class="fas fa-star"></i> Оставить отзыв</h3>
+            <input type="hidden" id="editingReviewId" value="">
+            <p id="reviewAttractionName"></p>
+            <div class="rating-input">
+                <span>Оценка:</span>
+                <div class="stars" id="ratingStars">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <input type="hidden" id="reviewRating" value="0">
+            </div>
+            <textarea id="reviewTextArea" rows="4" placeholder="Поделитесь впечатлениями..."></textarea>
+            <button id="saveReviewBtn" class="btn-filled">Отправить</button>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА ДЕТАЛЬНОГО ПРОСМОТРА -->
+    <div id="detailModal" class="modal">
+        <div class="modal-card modal-card-large" id="detailModalContent"></div>
+    </div>
+
+    <!-- КНОПКА ОЧИСТКИ ДАННЫХ -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <button onclick="resetUserData()" style="background: #e74c3c; color: white; border: none; border-radius: 50px; padding: 10px 18px; cursor: pointer; font-size: 12px; opacity: 0.8;">
+            🗑️ Очистить мои данные
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
